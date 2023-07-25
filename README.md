@@ -14,6 +14,8 @@ jumpbox/bastion server and the NAT gateway are part of the public subnet. The ap
 - AWS
 - AWS cloudformation
 
+### Architecture diagram
+![arch-1](https://github.com/nikhil-31/django-docker-kubernetes-deploy-scripts/assets/19944703/82604d50-a92e-4695-a488-2c41726627b7)
 
 ### Getting started
 
@@ -44,5 +46,3 @@ Eg-
 ```
 The cloudformation stack must already exist
 
-### Architecture diagram
-![arch-1](https://github.com/nikhil-31/django-docker-kubernetes-deploy-scripts/assets/19944703/82604d50-a92e-4695-a488-2c41726627b7)
