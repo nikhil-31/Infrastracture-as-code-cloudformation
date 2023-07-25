@@ -1,7 +1,7 @@
 [
     {
       "ParameterKey": "EnvironmentName",
-      "ParameterValue": "UdacityProject"
+      "ParameterValue": "CFNProject"
     },
     {
       "ParameterKey": "VpcCIDR",
@@ -25,11 +25,11 @@
     },     
     {
         "ParameterKey": "AMIforServer",
-        "ParameterValue": "ami-0c1a7f89451184c8b"
+        "ParameterValue": "ami-053b0d53c279acc90"
     },
     {
         "ParameterKey": "AMIforJumpBox",
-        "ParameterValue": "ami-0c1a7f89451184c8b"
+        "ParameterValue": "ami-053b0d53c279acc90"
     },
     {
         "ParameterKey": "KeyPairNameForServer",

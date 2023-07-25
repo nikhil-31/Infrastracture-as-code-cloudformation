@@ -58,15 +58,15 @@ Resources:
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
-        Tags:
-            - Key: Name
-              Value: !Ref EnvironmentName
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
   
   InternetGatewayAttachment:
-      Type: AWS::EC2::VPCGatewayAttachment
-      Properties:
-          InternetGatewayId: !Ref InternetGateway
-          VpcId: !Ref VPC
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
   
   PublicSubnet1:
     Type: AWS::EC2::Subnet
@@ -82,36 +82,36 @@ Resources:
   PublicSubnet2: 
     Type: AWS::EC2::Subnet
     Properties:
-        VpcId: !Ref VPC
-        AvailabilityZone: !Select [ 1, !GetAZs '' ]
-        CidrBlock: !Ref PublicSubnet2CIDR
-        MapPublicIpOnLaunch: true
-        Tags: 
-            - Key: Name 
-              Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags: 
+        - Key: Name 
+          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
     
   PrivateSubnet1: 
-      Type: AWS::EC2::Subnet
-      Properties:
-          VpcId: !Ref VPC
-          AvailabilityZone: !Select [ 0, !GetAZs '' ]
-          CidrBlock: !Ref PrivateSubnet1CIDR
-          MapPublicIpOnLaunch: false
-          Tags: 
-              - Key: Name 
-                Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PrivateSubnet1CIDR
+      MapPublicIpOnLaunch: false
+      Tags: 
+        - Key: Name 
+          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
 
   PrivateSubnet2: 
-      Type: AWS::EC2::Subnet
-      Properties:
-          VpcId: !Ref VPC
-          AvailabilityZone: !Select [ 1, !GetAZs '' ]
-          CidrBlock: !Ref PrivateSubnet2CIDR
-          MapPublicIpOnLaunch: false
-          Tags: 
-              - Key: Name 
-                Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
-  
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: !Ref PrivateSubnet2CIDR
+      MapPublicIpOnLaunch: false
+      Tags: 
+        - Key: Name 
+          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+
   NatGateway1EIP:
     Type: AWS::EC2::EIP
     DependsOn: InternetGatewayAttachment
@@ -133,8 +133,8 @@ Resources:
   NatGateway2: 
     Type: AWS::EC2::NatGateway
     Properties:
-        AllocationId: !GetAtt NatGateway2EIP.AllocationId
-        SubnetId: !Ref PublicSubnet2
+      AllocationId: !GetAtt NatGateway2EIP.AllocationId
+      SubnetId: !Ref PublicSubnet2
   
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -167,23 +167,23 @@ Resources:
   PrivateRouteTable1:
     Type: AWS::EC2::RouteTable
     Properties: 
-        VpcId: !Ref VPC
-        Tags: 
-            - Key: Name 
-              Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+      VpcId: !Ref VPC
+      Tags: 
+        - Key: Name 
+          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
 
   DefaultPrivateRoute1:
-      Type: AWS::EC2::Route
-      Properties:
-          RouteTableId: !Ref PrivateRouteTable1
-          DestinationCidrBlock: 0.0.0.0/0
-          NatGatewayId: !Ref NatGateway1
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway1
 
   PrivateSubnet1RouteTableAssociation:
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties:
-          RouteTableId: !Ref PrivateRouteTable1
-          SubnetId: !Ref PrivateSubnet1
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet1
   
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
@@ -245,8 +245,8 @@ Resources:
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     DependsOn:
-        - PrivateSubnet1RouteTableAssociation
-        - PrivateSubnet2RouteTableAssociation
+      - PrivateSubnet1RouteTableAssociation
+      - PrivateSubnet2RouteTableAssociation
     Properties:
       UserData:
         Fn::Base64: !Sub |
@@ -306,16 +306,16 @@ Resources:
       Protocol: HTTP
 
   ALBListenerRule:
-      Type: AWS::ElasticLoadBalancingV2::ListenerRule
-      Properties:
-        Actions:
-        - Type: forward
-          TargetGroupArn: !Ref 'WebAppTargetGroup'
-        Conditions:
-        - Field: path-pattern
-          Values: [/]
-        ListenerArn: !Ref 'Listener'
-        Priority: 1
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn: !Ref 'WebAppTargetGroup'
+      Conditions:
+      - Field: path-pattern
+        Values: [/]
+      ListenerArn: !Ref 'Listener'
+      Priority: 1
 
   WebAppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -366,24 +366,24 @@ Resources:
   S3GetIAMRole:
     Type: 'AWS::IAM::Role'
     Properties:
-        AssumeRolePolicyDocument:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service:
+                  - 'ec2.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Path: '/'
+      Policies:
+        - PolicyName: S3GetPolicy
+          PolicyDocument:
             Version: '2012-10-17'
             Statement:
-                - Effect: 'Allow'
-                  Principal:
-                    Service:
-                        - 'ec2.amazonaws.com'
-                  Action:
-                    - 'sts:AssumeRole'
-        Path: '/'
-        Policies:
-            - PolicyName: S3GetPolicy
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                    - Effect: 'Allow'
-                      Action: 's3:Get*'
-                      Resource: '*'
+              - Effect: 'Allow'
+                Action: 's3:Get*'
+                Resource: '*'
   S3GetInstanceProfile:
     Type: 'AWS::IAM::InstanceProfile'
     Properties:
@@ -457,8 +457,3 @@ Outputs:
     Value: !GetAtt WebAppLB.DNSName
     Export:
       Name: !Sub ${EnvironmentName}-LB-DNS-NAME
-
-
-
-
-
